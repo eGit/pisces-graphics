@@ -23,6 +23,8 @@
  */
 package pisces.d2;
 
+import pisces.m.Matrix;
+
 /**
  * Floating point user interface (package driver).
  * 
@@ -100,11 +102,11 @@ public final class PiscesRenderer
     private double[] dashArray = null;
     private double dashPhase = 0;
 
-    private Transform6 transform = new Transform6();
+    private Matrix transform = new Matrix();
 
     private Paint paint;
-    private Transform6 paintTransform;
-    private Transform6 paintCompoundTransform;
+    private Matrix paintTransform;
+    private Matrix paintCompoundTransform;
 
     private int[] gcm_fractions = null;
     private int[] gcm_rgba = null;
@@ -138,7 +140,10 @@ public final class PiscesRenderer
 
 
     public PiscesRenderer(NativeSurface data){
-        this(data,0,0,0,0,0,Surface.TYPE_INT_ARGB);
+        this(data,Surface.TYPE_INT_ARGB);
+    }
+    public PiscesRenderer(NativeSurface data, int type){
+        this(data,0,0,0,0,0,type);
     }
     /**
      * Creates a renderer that will write into a given pixel array.
@@ -228,10 +233,11 @@ public final class PiscesRenderer
 
         this.setColor(red, green, blue, 255);
     }
-    public void setPaint(Paint paint, Transform6 transform)
+    public void setPaint(Paint paint, Matrix transform)
     {
-        Transform6 paintCompoundTransform = new Transform6(this.transform);
-        paintCompoundTransform.postMultiply(transform);
+        Matrix paintCompoundTransform = new Matrix(this.transform);
+
+        paintCompoundTransform.mul(transform);
 
         this.setPaintTransform(paintCompoundTransform);
 
@@ -258,8 +264,8 @@ public final class PiscesRenderer
                 strokeFlattener.setFlatness(1);
             }
 
-            Transform6 t = transform;
-            t = new Transform6(transform);
+            Matrix t = transform;
+            t = new Matrix(transform);
             t.m02 += STROKE_X_BIAS;
             t.m12 += STROKE_Y_BIAS;
             strokeTransformer.setTransform(t);
@@ -327,9 +333,9 @@ public final class PiscesRenderer
     /**
      * Sets the current transform from user to window coordinates.
      *
-     * @param transform an <code>Transform6</code> object.
+     * @param transform an <code>Matrix</code> object.
      */
-    public void setTransform(Transform6 transform) {
+    public void setTransform(Matrix transform) {
 
         this.transform = transform;
 
@@ -341,8 +347,8 @@ public final class PiscesRenderer
 
         invalidate();
     }
-    public Transform6 getTransform() {
-        return new Transform6(transform);
+    public Matrix getTransform() {
+        return new Matrix(transform);
     }
     /**
      * Sets a clip rectangle for all primitives.  Each primitive will be
@@ -706,9 +712,9 @@ public final class PiscesRenderer
         this.textFillerP = null;
         this.strokerP = null;
     }
-    private void setPaintTransform(Transform6 paintTransform) {
-        this.paintTransform = new Transform6(paintTransform);
-        this.paintCompoundTransform = new Transform6(paintTransform);
+    private void setPaintTransform(Matrix paintTransform) {
+        this.paintTransform = new Matrix(paintTransform);
+        this.paintCompoundTransform = new Matrix(paintTransform);
     }
     private void fillOrDrawRect(PathSink consumer,
                                 double x, double y, double w, double h)

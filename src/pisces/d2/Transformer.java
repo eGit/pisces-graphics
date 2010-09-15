@@ -23,6 +23,8 @@
  */
 package pisces.d2;
 
+import pisces.m.Matrix;
+
 /**
  * 
  */
@@ -41,7 +43,7 @@ public class Transformer
         super();
     }
     public Transformer(PathSink output,
-                       Transform6 transform)
+                       Matrix transform)
     {
         if (output instanceof Transformer) {
             /*
@@ -63,7 +65,7 @@ public class Transformer
         classify();
     }
 
-    public void setTransform(Transform6 transform) {
+    public void setTransform(Matrix transform) {
         this.m00 = transform.m00;
         this.m01 = transform.m01;
         this.m02 = transform.m02;

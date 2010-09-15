@@ -23,6 +23,8 @@
  */
 package pisces.d2;
 
+import pisces.m.Matrix;
+
 public class Stroker
     extends LineSink
 {
@@ -42,7 +44,7 @@ public class Stroker
     private int joinStyle;
     private double miterLimit;
 
-    private Transform4 transform;
+    private Matrix transform;
     private double m00, m01;
     private double m10, m11;
 
@@ -112,7 +114,7 @@ public class Stroker
      * <code>JOIN_MITER</code>, <code>JOIN_ROUND</code> or
      * <code>JOIN_BEVEL</code>.
      * @param miterLimit the desired miter limit
-     * @param transform a <code>Transform4</code> object indicating
+     * @param transform a <code>Matrix</code> object indicating
      * the transform that has been previously applied to all incoming
      * coordinates.  This is required in order to produce consistently
      * shaped end caps and joins.
@@ -122,7 +124,7 @@ public class Stroker
                    int capStyle,
                    int joinStyle,
                    double miterLimit,
-                   Transform4 transform)
+                   Matrix transform)
     {
         super();
         this.setOutput(output);
@@ -149,7 +151,7 @@ public class Stroker
      * <code>JOIN_MITER</code>, <code>JOIN_ROUND</code> or
      * <code>JOIN_BEVEL</code>.
      * @param miterLimit the desired miter limit, in S15.16 format.
-     * @param transform a <code>Transform4</code> object indicating
+     * @param transform a <code>Matrix</code> object indicating
      * the transform that has been previously applied to all incoming
      * coordinates.  This is required in order to produce consistently
      * shaped end caps and joins.
@@ -158,7 +160,7 @@ public class Stroker
                               int capStyle,
                               int joinStyle,
                               double miterLimit,
-                              Transform4 transform)
+                              Matrix transform)
     {
         this.lineWidth = lineWidth;
         this.lineWidth2 = lineWidth/2.0;

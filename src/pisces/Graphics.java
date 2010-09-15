@@ -21,7 +21,7 @@ package pisces;
 
 import pisces.d2.NativeSurface;
 import pisces.d2.PiscesRenderer;
-import pisces.d2.Transform6;
+import pisces.m.Matrix;
 import pisces.png.Encoder;
 
 /**
@@ -65,6 +65,7 @@ public class Graphics
         else
             throw new IllegalArgumentException();
     }
+
 
     public final byte[] toPNG(){
 
@@ -116,11 +117,11 @@ public class Graphics
         this.renderer.setColor(red, green, blue);
         return this;
     }
-    public final Graphics setTransform(Transform6 transform) {
+    public final Graphics setTransform(Matrix transform) {
         this.renderer.setTransform(transform);
         return this;
     }
-    public final Transform6 getTransform() {
+    public final Matrix getTransform() {
         return this.renderer.getTransform();
     }
     public final Graphics setClip(double minX, double minY, double width, double height) {
@@ -166,7 +167,9 @@ public class Graphics
     public final Graphics drawPath(Path p){
         if (null != p){
             this.setStroke();
+            this.renderer.beginRendering(p.windingRule);
             p.produce(this.renderer);
+            this.renderer.endRendering();
             return this;
         }
         else
@@ -175,7 +178,9 @@ public class Graphics
     public final Graphics fillPath(Path p){
         if (null != p){
             this.setFill();
+            this.renderer.beginRendering(p.windingRule);
             p.produce(this.renderer);
+            this.renderer.endRendering();
             return this;
         }
         else

@@ -23,8 +23,10 @@
  */
 package pisces.d2;
 
+import pisces.m.Matrix;
+
 /**
- * Rendering plugin works in fixed point (S15.16) values.
+ * Rendering plugin works on fixed point (S15.16) coordinate values.
  * 
  * @see Renderer
  */
@@ -32,23 +34,25 @@ public abstract class Paint
     extends FXMath
 {
 
-    Transform6 transform;
-    Transform6 inverse;
+    protected Matrix transform;
+    protected Matrix inverse;
 
-    public Paint(Transform6 transform) {
-        this.transform = new Transform6(transform);
-        this.inverse = transform.inverse();
+
+    public Paint(Matrix transform) {
+        this.transform = new Matrix(transform);
+        this.inverse = new Matrix(transform).invert();
     }
 
-    public void setTransform(Transform6 transform) {
-        this.transform = new Transform6(transform);
-        this.inverse = transform.inverse();
-    }
 
+    public void setTransform(Matrix transform) {
+        this.transform = new Matrix(transform);
+        this.inverse = new Matrix(transform).invert();
+    }
     public void setQuality(int quality) {
-        // do nothing
     }
-
+    /**
+     * Fixed point S15.16 coordinate values
+     */
     public abstract void paint(int x, int y, int width, int height,
                                int[] minTouched, int[] maxTouched,
                                int[] dst,

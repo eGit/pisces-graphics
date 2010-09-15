@@ -23,6 +23,8 @@
  */
 package pisces.d2;
 
+import pisces.m.Matrix;
+
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -382,9 +384,9 @@ public class PiscesFont {
 
             double width = (face.width[c]*size);
 
-            Transform6 transform = new Transform6(size2, 0,
-                                                  0, size2,
-                                                  x, y);
+            Matrix transform = new Matrix(size2, 0,
+                                          0, size2,
+                                          x, y);
 
             Transformer pt = new Transformer(consumer, transform);
 

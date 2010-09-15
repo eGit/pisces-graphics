@@ -23,6 +23,8 @@
  */
 package pisces.d2;
 
+import pisces.m.Matrix;
+
 /**
  * The <code>Dasher</code> class takes a series of linear commands
  * (<code>moveTo</code>, <code>lineTo</code>, <code>close</code> and
@@ -50,7 +52,7 @@ public class Dasher extends LineSink {
     double m00, m01;
     double m10, m11;
 
-    Transform4 transform;
+    Matrix transform;
 
     boolean symmetric;
     double ldet;
@@ -69,7 +71,7 @@ public class Dasher extends LineSink {
     }
     public Dasher(LineSink output,
                   double[] dash, double phase,
-                  Transform4 transform)
+                  Matrix transform)
     {
         super();
         this.setOutput(output);
@@ -81,7 +83,7 @@ public class Dasher extends LineSink {
         this.output = output;
     }
     public void setParameters(double[] dash, double phase,
-                              Transform4 transform)
+                              Matrix transform)
     {
         if (phase < 0) {
             throw new IllegalArgumentException("phase < 0 !");

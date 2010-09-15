@@ -25,7 +25,16 @@ package pisces.d2;
 
 /**
  * Fixed point rasterization engine.  Coordinate values of type int
- * are in S15.16 format.
+ * are in S15.16 format, and then supersampled into subpixel
+ * coordinate space.
+ * 
+ * The backend blender is {@link Blit}.  This front end to the blender
+ * computes an alpha plane (from Renderer field rowAA to Blit argument
+ * alphaData) between a sink (source) and a surface (target) for
+ * subpixel blending (antialiasing).
+ * 
+ * @see PiscesRenderer
+ * @see Blit
  */
 public class Renderer
     extends RendererBase
@@ -432,11 +441,9 @@ public class Renderer
      */
     private void createAlphaMap(int alpha) {
 
-        alpha <<= 16;//
+        alpha *= 256;
 
         for (int index = 0; index <= MAX_AA_ALPHA; index++) {
-
-            //            alphaMap[index] = (256*index*alpha + HALF_MAX_AA_ALPHA_DENOM)/
 
             alphaMap[index] = ((index*alpha + HALF_MAX_AA_ALPHA_DENOM)/
                                MAX_AA_ALPHA_DENOM);

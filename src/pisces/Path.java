@@ -27,7 +27,15 @@ package pisces;
 public class Path
     extends pisces.d2.PathStore
 {
+
+    public final int windingRule;
+
+
     public Path(){
+        this(WIND_NON_ZERO);
+    }
+    public Path(int windingRule){
         super();
+        this.windingRule = windingRule;
     }
 }

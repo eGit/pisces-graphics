@@ -68,6 +68,7 @@ public interface Constants {
      * Common Math constants, epsilon for values 0.0 to 10.0.
      */
     public final static double EPS = (1e-7);
+
     public final static double EPS_M2 = (EPS*2.0);
     public final static double EPS_D2 = (EPS/2.0);
     public final static double EPS_1D2 = (1.0 - EPS_D2);
