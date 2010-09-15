@@ -33,7 +33,7 @@ import java.lang.Math;
  *
  */
 public abstract class Tuple
-    extends pisces.d2.FPMath
+    extends pisces.d.FPMath
     implements Cloneable
 {
 

@@ -20,12 +20,12 @@
 package pisces;
 
 /**
- * @see pisces.d2.LineSink
- * @see pisces.d2.PathSink
+ * @see pisces.d.LineSink
+ * @see pisces.d.PathSink
  * @see Graphics
  */
 public class Path
-    extends pisces.d2.PathStore
+    extends pisces.d.PathStore
 {
 
     public final int windingRule;

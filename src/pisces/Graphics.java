@@ -19,8 +19,8 @@
  */
 package pisces;
 
-import pisces.d2.NativeSurface;
-import pisces.d2.PiscesRenderer;
+import pisces.d.NativeSurface;
+import pisces.d.PiscesRenderer;
 import pisces.m.Matrix;
 import pisces.png.Encoder;
 

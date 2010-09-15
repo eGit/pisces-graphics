@@ -22,7 +22,7 @@
  */
 package pisces.png;
 
-import pisces.d2.Surface;
+import pisces.d.Surface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -32,7 +32,7 @@ package pisces.m;
  *
  */
 public class AxisAngle 
-    extends pisces.d2.FPMath
+    extends pisces.d.FPMath
     implements Cloneable
 {
 

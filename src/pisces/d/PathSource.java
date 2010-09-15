@@ -21,41 +21,13 @@
  * Clara, CA 95054 or visit www.sun.com if you need additional 
  * information or have any questions.
  */
-package pisces.d2;
-
-import pisces.m.Matrix;
+package pisces.d;
 
 /**
- * Rendering plugin works on fixed point (S15.16) coordinate values.
  * 
- * @see Renderer
  */
-public abstract class Paint
-    extends FXMath
-{
+public interface PathSource {
 
-    protected Matrix transform;
-    protected Matrix inverse;
-
-
-    public Paint(Matrix transform) {
-        this.transform = new Matrix(transform);
-        this.inverse = new Matrix(transform).invert();
-    }
-
-
-    public void setTransform(Matrix transform) {
-        this.transform = new Matrix(transform);
-        this.inverse = new Matrix(transform).invert();
-    }
-    public void setQuality(int quality) {
-    }
-    /**
-     * Fixed point S15.16 coordinate values
-     */
-    public abstract void paint(int x, int y, int width, int height,
-                               int[] minTouched, int[] maxTouched,
-                               int[] dst,
-                               int dstOffset, int dstScanlineStride);
+    public void produce(PathSink consumer);
 
 }

@@ -31,7 +31,7 @@ import java.lang.Math;
  * A double precision floating point 3 by 3 matrix in row major notation.
  */
 public class Matrix 
-    extends pisces.d2.FPMath
+    extends pisces.d.FPMath
     implements Cloneable
 {
 

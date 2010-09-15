@@ -21,7 +21,7 @@
  * Clara, CA 95054 or visit www.sun.com if you need additional 
  * information or have any questions.
  */
-package pisces.d2;
+package pisces.d;
 
 /**
  * Fixed point rendering cache used by {@link Renderer}.

@@ -27,7 +27,7 @@ import pisces.png.Encoder;
  * @see Graphics
  */
 public class Image
-    extends pisces.d2.NativeSurface
+    extends pisces.d.NativeSurface
     implements Cloneable
 {
 
