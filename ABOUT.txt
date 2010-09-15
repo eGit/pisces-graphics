@@ -1,0 +1,79 @@
+
+  Modified copy of pisces, as found from
+
+  https://phoneme.dev.java.net/svn/phoneme/components/pisces/trunk
+
+  Redesigned from a java2d internal sink to a user layer for gae image
+  rendering.  Most of the code uses floating point types for
+  coordinates.
+
+  The interior code in Renderer and Blit are largely as original,
+  using S15.16 fixed point values encoded into the 'int' type for
+  raster ops.
+
+  The original (svn) code employs the 'int' type in S15.16 fixed point
+  format for subpixel sampling.  However, not all ints are fixed point
+  values so it's far from readable.  See PiscesRenderingEngine from
+  the pisces.zip source dump, referenced below.  One can follow the
+  data flow into the pixel array arithmetic to see which values could
+  not be fixed point.  And then work backwards to see how things like
+  width and height are integer values.
+
+  In this version, types are rational outside of Renderer.  Within
+  Renderer, fixed point ints are employed for subpixel sampling.
+  Otherwise, floating point (double) types are employed in
+  conventional usage.
+
+
+  http://mail.openjdk.java.net/pipermail/2d-dev/2007-October/000078.html
+
+    [OpenJDK 2D-Dev] Open Source rasterizer
+
+    From: Jim Graham <Jim.A.Graham at Sun.COM>
+    Date: Wed Oct 3 17:29:31 PDT 2007
+
+
+    As Roman mentioned earlier, I've culled together some code from another 
+    Java project into a replacement for the encumbered Ductus renderer in 
+    the production JDK.
+
+    This rasterizer is built from all of our own code so we can release it 
+    as part of the Open JDK project.
+
+    Unfortunately, it isn't as fast as the existing Ductus binary plugs so 
+    some work will be needed to improve its speed, but it covers the entire 
+    API that we used to rely on Ductus for so we've removed the binary plugs 
+    from the Open Source version.  Here are some known issues with the new 
+    rasterizer that need to be addressed:
+
+    - Performance, performance, performance
+    - It uses fixed point without much overflow detection/handling
+    - It does not honor the STROKE_CONTROL hints so thin lines are vague
+
+    In terms of performance, someone who is good with a code analyzer could 
+    have a field day, but here are some ideas that would be reasonably easy 
+    to investigate to see if they make a noticeable improvement in the 
+    performance:
+
+    - reusing the Renderer and associated objects vs. recreating them
+    - A better storage format for the PiscesCache for generating tiles
+    - Tighter integration between the pixelization code and the cache
+    - use floats in the line widening which should go faster on desktops
+
+    I'm attaching a zip file of the sources for a sneak peek.  These sources 
+    should appear in the public repository in a few days (just barely 
+    beating the temporary freeze for the Mercurial transition).
+
+    I'd recommend anyone interested in playing with this code to join the 
+    "Graphics-Rasterizer-Dev" list on openjdk:
+
+    http://mail.openjdk.java.net/mailman/listinfo/graphics-rasterizer-dev
+
+              ...jim
+
+    -------------- next part --------------
+    Name: pisces.zip
+    Type: application/zip
+    Size: 32915 bytes
+    Location: http://mail.openjdk.java.net/pipermail/2d-dev/attachments/20071003/f2d8998c/attachment.zip 
+

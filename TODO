@@ -1,0 +1,7 @@
+*                                             -*-outline-*-
+
+* Analyze PiscesCache wrt renderPath and PathStore in order to replace the COMMAND set with the PathStore
+
+* Complete d2 cloning 
+** See PiscesRenderer and all LinkSink subclasses
+
