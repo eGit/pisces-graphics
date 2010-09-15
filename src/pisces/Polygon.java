@@ -50,7 +50,7 @@ public class Polygon
         this.moveTo(x0,y0);
         this.lineTo(x0,y1);
         this.lineTo(x1,y1);
-        this.lineTo(x0,y1);
+        this.lineTo(x1,y0);
         this.close();
     }
     public Polygon(int[] x, int[] y){
