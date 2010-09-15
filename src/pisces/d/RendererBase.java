@@ -58,7 +58,7 @@ public abstract class RendererBase
      * look through transparent green glass bottle at some object, we can see 
      * mixture of glass and objects colors. Composite color is alpha-weigth average 
      * of source and destination.
-     * @see setCompositeRule(int), PiscesRenderer.setComposite(int, float)    
+     * @see setCompositeRule(int), Pisces.setComposite(int, float)    
      */
     public static final int COMPOSITE_CLEAR    = 0;
     public static final int COMPOSITE_SRC      = 1;

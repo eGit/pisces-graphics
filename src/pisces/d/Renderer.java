@@ -24,16 +24,12 @@
 package pisces.d;
 
 /**
- * Fixed point rasterization engine.  Coordinate values of type int
- * are in S15.16 format, and then supersampled into subpixel
- * coordinate space.
- * 
  * The backend blender is {@link Blit}.  This front end to the blender
  * computes an alpha plane (from Renderer field rowAA to Blit argument
  * alphaData) between a sink (source) and a surface (target) for
  * subpixel blending (antialiasing).
  * 
- * @see PiscesRenderer
+ * @see Pisces
  * @see Blit
  */
 public class Renderer
@@ -82,15 +78,15 @@ public class Renderer
      */
     PiscesCache cache = null;
     /*
-     * Drawing region (S15.16)
+     * Drawing region in S15.16 space
      */
     private int boundsMinX, boundsMinY, boundsMaxX, boundsMaxY;
     /*
-     * Current primitive (subsample precision)
+     * Current primitive in subsample space
      */
     private int rasterMinX, rasterMaxX, rasterMinY, rasterMaxY;
     /*
-     * Current primitive
+     * Current primitive in nominal user space
      */
     private int bboxX0, bboxY0, bboxX1, bboxY1;
     /*
@@ -98,7 +94,7 @@ public class Renderer
      */
     private int windingRule = WIND_NON_ZERO;
     /*
-     * Current drawing position, i.e., final point of last segment
+     * Current drawing position (i.e., final point of last segment) in S15.16 space
      */
     private int x0, y0; 
     /*
@@ -154,7 +150,7 @@ public class Renderer
     private int currX, currY;
     private int currImageOffset;
     /*
-     * Edge list data
+     * Edge data is in S15.16 format
      */
     private int[] edges = new int[5*INITIAL_EDGES];
     private int edgeIdx = 0;
@@ -198,16 +194,6 @@ public class Renderer
     }
 
 
-    public void setImageData(Object imageData,
-                             int imageOffset,
-                             int imageScanlineStride,
-                             int imagePixelStride)
-    {
-        this.imageData = imageData;
-        this.imageOffset = imageOffset;
-        this.imageScanlineStride = imageScanlineStride;
-        this.imagePixelStride = imagePixelStride;
-    }
     public void setAntialiasing(int subpixelLgPositionsX,
                                 int subpixelLgPositionsY)
     {
@@ -260,7 +246,7 @@ public class Renderer
         }
 
         this.calpha = alpha;
-        createAlphaMap(calpha);
+        this.createAlphaMap(alpha);
 
         this.paint = null;
         this.paintMode = PAINT_FLAT_COLOR;
@@ -272,10 +258,10 @@ public class Renderer
         this.paintMode = PAINT_TEXTURE;
     }
     public void getBoundingBox(double[] bbox) {
-        bbox[0] = ToFloat(bboxX0);
-        bbox[1] = ToFloat(bboxY0);
-        bbox[2] = ToFloat(bboxX1 - bboxX0);
-        bbox[3] = ToFloat(bboxY1 - bboxY0);
+        bbox[0] = bboxX0;
+        bbox[1] = bboxY0;
+        bbox[2] = (bboxX1 - bboxX0);
+        bbox[3] = (bboxY1 - bboxY0);
     }
     public void beginRendering(double boundsX, double boundsY,
                                double boundsWidth, double boundsHeight,
@@ -286,10 +272,14 @@ public class Renderer
 
         resetEdges();
 
-        this.bboxX0 = this.boundsMinX = ToFixed(boundsX); 
-        this.bboxY0 = this.boundsMinY = ToFixed(boundsY);
-        this.bboxX1 = this.boundsMaxX = ToFixed(boundsX + boundsWidth);
-        this.bboxY1 = this.boundsMaxY = ToFixed(boundsY + boundsHeight);
+        this.bboxX0 = (int)boundsX; 
+        this.bboxY0 = (int)boundsY;
+        this.bboxX1 = (int)(boundsX + boundsWidth);
+        this.bboxY1 = (int)(boundsY + boundsHeight);
+        this.boundsMinX = ToFixed(boundsX); 
+        this.boundsMinY = ToFixed(boundsY);
+        this.boundsMaxX = ToFixed(boundsX + boundsWidth);
+        this.boundsMaxY = ToFixed(boundsY + boundsHeight);
         this.windingRule = windingRule;
     }
     public void moveTo(double x0, double y0) {
@@ -601,10 +591,10 @@ public class Renderer
 
             bboxX0 = x0 >> SUBPIXEL_LG_POSITIONS_X;
             bboxY0 = y0 >> SUBPIXEL_LG_POSITIONS_Y;
-            bboxX1 = (x1 + SUBPIXEL_POSITIONS_X - 1)
-                >> SUBPIXEL_LG_POSITIONS_X;
-            bboxY1 = (y1 + SUBPIXEL_POSITIONS_Y - 1)
-                >> SUBPIXEL_LG_POSITIONS_Y;
+            bboxX1 = ((x1 + SUBPIXEL_POSITIONS_X - 1)
+                      >> SUBPIXEL_LG_POSITIONS_X);
+            bboxY1 = ((y1 + SUBPIXEL_POSITIONS_Y - 1)
+                      >> SUBPIXEL_LG_POSITIONS_Y);
 
             return;
         }
