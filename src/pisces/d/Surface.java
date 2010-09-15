@@ -55,6 +55,39 @@ public interface Surface
      */
     public static final int TYPE_BYTE_GRAY = 10;
 
+
+    public interface Sink
+        extends Surface
+    {
+        public int getDataType();
+
+        public Object getData();
+
+        public interface Int
+            extends Sink
+        {
+            public int[] getData();
+        }
+
+        public interface Short
+            extends Sink
+        {
+            public short[] getData();
+        }
+
+        public interface Byte
+            extends Sink
+        {
+            public byte[] getData();
+        }
+
+        public void drawSurface(Surface ps, int srcX, int srcY, 
+                                int dstX, int dstY, int width, int height, float opacity);
+    
+        public void drawRGB(int[] argb, int offset, int scanLength, 
+                            int x, int y, int width, int height, float opacity);
+    }
+
     public int getWidth();
     
     public int getHeight();

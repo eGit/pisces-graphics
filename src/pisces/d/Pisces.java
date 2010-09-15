@@ -23,6 +23,7 @@
  */
 package pisces.d;
 
+import pisces.Color;
 import pisces.m.Matrix;
 
 /**
@@ -31,9 +32,9 @@ import pisces.m.Matrix;
  * @see pisces.Graphics
  * @see pisces.d2.Renderer
  */
-public final class PiscesRenderer
+public final class Pisces
     extends PathSink
-    implements Cloneable
+    implements Surface.Sink
 {
 
     private static final double STROKE_X_BIAS;
@@ -80,10 +81,8 @@ public final class PiscesRenderer
     private static final double acv = 0.22385762508460333;
 
 
-    private Object data = null;
+    private Surface.Sink surface;
     private int width, height;
-    private int offset, scanlineStride, pixelStride;
-    private int type;
 
     private RendererBase rdr;
     private PathSink fillerP = null;
@@ -112,11 +111,8 @@ public final class PiscesRenderer
     private int[] gcm_rgba = null;
     private int gcm_cycleMethod = -1;
 
- 
-    private int red = 0;
-    private int green = 0;
-    private int blue = 0;
-    private int alpha = 255;
+    private Color color = new Color(0xff,0,0,0);
+
     /*
      * Current bounding box for all primitives
      */
@@ -139,62 +135,60 @@ public final class PiscesRenderer
     private boolean antialiasingOn = true;
 
 
-    public PiscesRenderer(NativeSurface data){
-        this(data,Surface.TYPE_INT_ARGB);
-    }
-    public PiscesRenderer(NativeSurface data, int type){
-        this(data,0,0,0,0,0,type);
-    }
-    /**
-     * Creates a renderer that will write into a given pixel array.
-     *
-     * @param data an <code>int</code> or <code>short</code> array
-     * where pixel data should be written.
-     * @param width the width of the pixel array.
-     * @param height the height of the pixel array.
-     * @param offset the starting offset of the pixel array.
-     * @param scanlineStride the scanline stride of the pixel array, in array
-     * entries.
-     * @param pixelStride the pixel stride of the pixel array, in array
-     * entries.
-     * @param type the pixel format, one of the
-     * <code>RendererBase.TYPE_*</code> constants.
-     */
-    public PiscesRenderer(Object data, int width, int height,
-                          int offset, int scanlineStride, int pixelStride,
-                          int type)
-    {
+    public Pisces(Surface.Sink surface){
         super();
+        if (null != surface){
+            this.surface = surface;
+            this.width = surface.getWidth();
+            this.height = surface.getHeight();
+            /*
+             * offset = 0
+             * scanlineStride = surface.getWidth()
+             * pixelStride = 1
+             */
+            this.rdr = new Renderer(surface.getData(), this.width, this.height,
+                                    0, this.width, 1, surface.getDataType());
 
-        if (data instanceof NativeSurface) {
-            NativeSurface ns = (NativeSurface)data;
-            
-            this.data = ns.getData();
-            this.width = ns.getWidth();
-            this.height = ns.getHeight();
-            this.offset = 0;
-            this.scanlineStride = ns.getWidth();
-            this.pixelStride = 1;
+            this.invalidate();
+            this.setFill();
         }
-        else {
-            this.data = data;
-            this.width = width;
-            this.height = height;
-            this.offset = offset;
-            this.scanlineStride = scanlineStride;
-            this.pixelStride = pixelStride;
-        }
-        
-        this.type = type;
-        this.rdr = new Renderer(this.data, this.width, this.height,
-                this.offset, this.scanlineStride, this.pixelStride,
-                type);
-
-        this.invalidate();
-        this.setFill();
+        else
+            throw new IllegalArgumentException();
     }
 
 
+    public int getDataType(){
+        return this.surface.getDataType();
+    }
+    public Object getData(){
+        return this.surface.getData();
+    }
+    public int getWidth(){
+        return this.width;
+    }
+    public int getHeight(){
+        return this.height;
+    }
+    public void getRGB(int[] argb, int offset, int scan, 
+                       int x, int y, int w, int h)
+    {
+        this.surface.getRGB(argb,offset,scan,x,y,w,h);
+    }
+    public void setRGB(int[] argb, int offset, int scan, 
+                       int x, int y, int w, int h)
+    {
+        this.surface.setRGB(argb,offset,scan,x,y,w,h);
+    }
+    public void drawSurface(Surface ps, int srcX, int srcY, 
+                            int dstX, int dstY, int w, int h, float opacity)
+    {
+        this.surface.drawSurface(ps,srcX, srcY, dstX, dstY, w, h, opacity);
+    }
+    public void drawRGB(int[] argb, int offset, int scan, 
+                        int x, int y, int w, int h, float opacity)
+    {
+        this.surface.drawRGB(argb,offset,scan,x,y,w,h,opacity);
+    }
     public void setAntialiasing(boolean antialiasingOn) {
         this.antialiasingOn = antialiasingOn;
         int samples = antialiasingOn ? 3 : 0;
@@ -204,34 +198,17 @@ public final class PiscesRenderer
     public boolean getAntialiasing() {
         return this.antialiasingOn;
     }
-    /**
-     * Sets the current paint color.
-     *
-     * @red a value between 0 and 255.
-     * @green a value between 0 and 255.
-     * @blue a value between 0 and 255.
-     * @alpha a value between 0 and 255.
-     */
-    public void setColor(int red, int green, int blue, int alpha) {
-
-        this.rdr.setColor(red, green, blue, alpha);
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.alpha = alpha;
-
-        this.paint = null;
+    public Color getColor(){
+        return this.color;
     }
-    /**
-     * Sets the current paint color.  An alpha value of 255 is used.
-     *
-     * @red a value between 0 and 255.
-     * @green a value between 0 and 255.
-     * @blue a value between 0 and 255.
-     */
-    public void setColor(int red, int green, int blue) {
-
-        this.setColor(red, green, blue, 255);
+    public void setColor(Color color){
+        if (null != color){
+            this.color = color;
+            this.paint = null;
+            this.rdr.setColor(color.red, color.green, color.blue, color.alpha);
+        }
+        else
+            throw new IllegalArgumentException();
     }
     public void setPaint(Paint paint, Matrix transform)
     {
@@ -671,9 +648,7 @@ public final class PiscesRenderer
             this.endRendering();//this.rdr.endRendering();
         }
     }
-    public void getImageData() {
-        rdr.getImageData(data, offset, scanlineStride);
-    }
+
     public void clearRect(double x, double y, double w, double h) {
 
         double maxX = x + w;
@@ -696,9 +671,9 @@ public final class PiscesRenderer
     /*
      * TODO: add cases for fields
      */
-    public PiscesRenderer clone(){
+    public Pisces clone(){
 
-        PiscesRenderer clone = (PiscesRenderer)super.clone();
+        Pisces clone = (Pisces)super.clone();
 
         clone.rdr = clone.rdr.clone();
 

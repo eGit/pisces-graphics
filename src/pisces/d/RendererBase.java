@@ -140,14 +140,6 @@ public abstract class RendererBase
     public abstract void setCache(PiscesCache cache);
 
     public abstract void renderFromCache(PiscesCache cache);
-
-//     public abstract void drawImage(int imageType, Object data,
-//                                    double width, double height,
-//                                    int offset, int stride,
-//                                    double x, double y);
-
-    public void getImageData(Object data, int offset, int scanlineStride) {
-    }
     
     public abstract void clearRect(double x, double y, double w, double h);
 

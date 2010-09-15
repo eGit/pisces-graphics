@@ -20,7 +20,7 @@
 package pisces;
 
 import pisces.d.NativeSurface;
-import pisces.d.PiscesRenderer;
+import pisces.d.Pisces;
 import pisces.m.Matrix;
 import pisces.png.Encoder;
 
@@ -40,7 +40,7 @@ public class Graphics
 
     protected final NativeSurface surface;
 
-    private PiscesRenderer renderer;
+    private Pisces renderer;
 
 
     public Graphics(int w, int h){
@@ -49,7 +49,7 @@ public class Graphics
             this.width = w;
             this.height = h;
             this.surface = new NativeSurface(w,h);
-            this.renderer = new PiscesRenderer(this.surface);
+            this.renderer = new Pisces(this.surface);
         }
         else
             throw new IllegalArgumentException();
@@ -60,7 +60,7 @@ public class Graphics
             this.width = img.getWidth();
             this.height = img.getHeight();
             this.surface = img;
-            this.renderer = new PiscesRenderer(img);
+            this.renderer = new Pisces(img);
         }
         else
             throw new IllegalArgumentException();
@@ -95,26 +95,11 @@ public class Graphics
     public final boolean getAntialiasing() {
         return this.renderer.getAntialiasing();
     }
+    public final Color getColor(){
+        return this.renderer.getColor();
+    }
     public final Graphics setColor(Color color){
-        this.renderer.setColor(color.red, color.green, color.blue, color.alpha);
-        return this;
-    }
-    public final Graphics setColor(int argb){
-        int a = (argb >>> 24) & 0xff;
-        if (0 == a)
-            a = 255;
-        int r = (argb >>> 16) & 0xff;
-        int g = (argb >>> 8) & 0xff;
-        int b = (argb & 0xff);
-        this.setColor(r,g,b,a);
-        return this;
-    }
-    public final Graphics setColor(int red, int green, int blue, int alpha) {
-        this.renderer.setColor(red, green, blue, alpha);
-        return this;
-    }
-    public final Graphics setColor(int red, int green, int blue) {
-        this.renderer.setColor(red, green, blue);
+        this.renderer.setColor(color);
         return this;
     }
     public final Graphics setTransform(Matrix transform) {
