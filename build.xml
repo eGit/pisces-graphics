@@ -91,7 +91,12 @@
 
     <java classpath="${test-target.jar}" classname="FillImage" fork="true">
 
-      <arg value="/tmp/pisces-test-FillImage.png"/>
+      <arg value="${test}/FillImage.png"/>
+    </java>
+
+    <java classpath="${test-target.jar}" classname="FillPath" fork="true">
+
+      <arg value="${test}/FillPath.png"/>
     </java>
 
   </target>

@@ -6,11 +6,11 @@ import pisces.Polygon;
 /**
  * Creates a 300x300 PNG image 
  */
-public class FillImage
+public class FillPath
     extends pisces.Image
 {
 
-    public FillImage(){
+    public FillPath(){
         super(300,300);
 
         Graphics g = this.createGraphics();
@@ -18,6 +18,10 @@ public class FillImage
 
         g.setColor(Color.White);
         g.fillRect(0, 0, 300, 300);
+
+        Polygon.Square square = new Polygon.Square(100,100,100);
+        g.setColor(Color.Black);
+        g.fillPath(square);
     }
 
 
@@ -27,7 +31,7 @@ public class FillImage
             try {
                 java.io.File out = new java.io.File(argv[0]);
 
-                FillImage img = new FillImage();
+                FillPath img = new FillPath();
                 byte[] png = img.toPNG();
                 java.io.OutputStream os = new java.io.FileOutputStream(out);
                 try {
@@ -46,7 +50,7 @@ public class FillImage
             }
         }
         else {
-            System.err.println("Usage: FillImage out-file.png");
+            System.err.println("Usage: FillPath out-file.png");
             System.exit(1);
         }
     }

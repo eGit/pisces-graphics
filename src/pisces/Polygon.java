@@ -28,6 +28,31 @@ public class Polygon
     extends Path
 {
 
+    public static class Rectangle
+        extends Polygon
+    {
+
+        public Rectangle(double x, double y, double w, double h){
+            super(x,(x+w),y,(y+w));
+        }
+    }
+    public static class Square 
+        extends Polygon.Rectangle
+    {
+        public Square(double x, double y, double s){
+            super(x,y,s,s);
+        }
+    }
+
+
+    public Polygon(double x0, double x1, double y0, double y1){
+        super();
+        this.moveTo(x0,y0);
+        this.lineTo(x0,y1);
+        this.lineTo(x1,y1);
+        this.lineTo(x0,y1);
+        this.close();
+    }
     public Polygon(int[] x, int[] y){
         super();
         if (null != x && null != y && x.length == y.length){
