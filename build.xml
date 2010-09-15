@@ -11,6 +11,7 @@
   <property name="ver.src" value="ver/src"/>
   <property name="bin" value="bin"/>
   <property name="lib" value="lib"/>
+  <property name="test" value="test"/>
 
   <property file="${user.home}/build.properties"/>
 
@@ -24,9 +25,12 @@
       <include name="**/*.jar" />
     </fileset>
   </path>
-  <path id="lib.path.code">
+  <path id="lib.path.test">
     <fileset dir="${lib}">
-      <include name="**/cpi-code-*.jar" />
+      <include name="**/*.jar" />
+    </fileset>
+    <fileset dir=".">
+      <include name="**/${ant.project.name}-*.jar" />
     </fileset>
   </path>
 
@@ -81,6 +85,34 @@
   <target name="minor" description="Increment project version minor number.">
     <version-minor/>
     <version/>
+  </target>
+
+  <target name="test" depends="test-jar">
+
+    <java classpath="${test-target.jar}" classname="FillImage" fork="true">
+
+      <arg value="/tmp/pisces-test-FillImage.png"/>
+    </java>
+
+  </target>
+
+  <target name="test-jar" depends="test-compile" description="Produce 'name-V*.jar' and 'name-V*.jar.md5'.  See 'version'.">
+
+    <property name="test-target.jar" value="${ant.project.name}-test-${this.version}.jar"/>
+
+    <archive target="${test-target.jar}" bin="${bin}" manifest="${test}/src/Manifest.mf">
+      <pack>
+        <zipfileset src="${target.jar}" />
+      </pack>
+    </archive>
+
+    <flush dir="${bin}" type="class"/>
+  </target>
+
+  <target name="test-compile" depends="jar" description="Compile code from 'test/src' to bin.">
+
+    <compile src="${test}/src" ver="${test}/ver" bin="${bin}" classpath.id="lib.path.test"/>
+
   </target>
 
 </project>

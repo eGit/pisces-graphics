@@ -54,7 +54,17 @@ public class Graphics
         else
             throw new IllegalArgumentException();
     }
-
+    public Graphics(Image img){
+        super();
+        if (null != img){
+            this.width = img.getWidth();
+            this.height = img.getHeight();
+            this.surface = img;
+            this.renderer = new PiscesRenderer(img);
+        }
+        else
+            throw new IllegalArgumentException();
+    }
 
     public final byte[] toPNG(){
 
@@ -83,6 +93,10 @@ public class Graphics
     }
     public final boolean getAntialiasing() {
         return this.renderer.getAntialiasing();
+    }
+    public final Graphics setColor(Color color){
+        this.renderer.setColor(color.red, color.green, color.blue, color.alpha);
+        return this;
     }
     public final Graphics setColor(int argb){
         int a = (argb >>> 24) & 0xff;

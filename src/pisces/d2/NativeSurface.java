@@ -23,7 +23,10 @@
  */
 package pisces.d2;
 
-public final class NativeSurface 
+/**
+ * 
+ */
+public class NativeSurface 
     extends Object
     implements Surface
 {
@@ -110,10 +113,12 @@ public final class NativeSurface
             drawRGBImpl(argb, offset, scanLength, x, y, width, height, opacity);
         }
     }
+
     
     private final int width;
     private final int height;
     private final int[] data;
+
 
     public NativeSurface(int width, int height) {
         this(null, width, height);
@@ -124,21 +129,19 @@ public final class NativeSurface
         this.width = width;
         this.height = height;
     }
+
     
-    public SurfaceDestination createSurfaceDestination() {
+    public final SurfaceDestination createSurfaceDestination() {
         return new NativeSurfaceDestination();
     }
-
-    public int getWidth() {
+    public final int getWidth() {
         return width;
     }
-    
-    public int getHeight() {
+    public final int getHeight() {
         return height;
     }
-    
-    public void getRGB(int[] argb, int offset, int scanLength, 
-                       int x, int y, int width, int height)
+    public final void getRGB(int[] argb, int offset, int scanLength, 
+                             int x, int y, int width, int height)
     {
         if ((argb == data) &&
             (offset == 0) &&
@@ -183,9 +186,8 @@ public final class NativeSurface
             }
         }
     }
-    
-    public void setRGB(int[] argb, int offset, int scanLength, 
-                       int x, int y, int width, int height)
+    public final void setRGB(int[] argb, int offset, int scanLength, 
+                             int x, int y, int width, int height)
     {
         if ((argb == data) &&
             (offset == 0) &&
@@ -283,10 +285,13 @@ public final class NativeSurface
             dstOffset += dstScanRest;
         }
     }
-
+    /**
+     * Fixed point rendering proceedure
+     */
     private static void paint(int[] dstRGB, int dstOffset, int dstScanLength,
             int[] srcRGB, int srcOffset, int srcScanLength,
-            int width, int height, float opacity) {
+            int width, int height, float opacity)
+    {
         int srcScanRest = srcScanLength - width;
         int dstScanRest = dstScanLength - width;
 
