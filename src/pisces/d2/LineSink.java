@@ -47,7 +47,7 @@ public abstract class LineSink
      * @param x0 the X coordinate 
      * @param y0 the Y coordinate 
      */
-    public void moveTo(double x0, double y0) {}
+    public abstract void moveTo(double x0, double y0);
     /**
      * Provides a hint that the current segment should be joined to
      * the following segment using an explicit miter or round join if
@@ -62,7 +62,7 @@ public abstract class LineSink
      * <p> Other {@link LineSink} classes should simply pass this hint
      * to their output sink as needed.
      */
-    public  void lineJoin() {}
+    public abstract  void lineJoin();
     /**
      * Draws a line from the current drawing position to the point
      * <code>(x1, y1)</code> and sets the current drawing position to
@@ -71,18 +71,18 @@ public abstract class LineSink
      * @param x1 the X coordinate 
      * @param y1 the Y coordinate 
      */
-    public  void lineTo(double x1, double y1) {}
+    public abstract  void lineTo(double x1, double y1);
     /**
      * Closes the current path by drawing a line from the current
      * drawing position to the point specified by the most recent
      * <code>moveTo</code> command.
      */
-    public void close() {}
+    public abstract void close();
     /**
      * Ends the current path.  It may be necessary to end a path in
      * order to allow end caps to be drawn.
      */
-    public void end() {}
+    public abstract void end();
 
     public LineSink clone(){
         try {

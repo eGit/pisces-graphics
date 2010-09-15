@@ -86,7 +86,7 @@ public class Transformer
         this.output = output;
     }
 
-    public void moveTo(int x0, int y0) {
+    public void moveTo(double x0, double y0) {
         double tx0, ty0;
         
         if (scaleAndTranslate) {
@@ -104,7 +104,7 @@ public class Transformer
         output.lineJoin();
     }
 
-    public void lineTo(int x1, int y1) {
+    public void lineTo(double x1, double y1) {
         double tx1, ty1;
 
         if (scaleAndTranslate) {
@@ -119,7 +119,7 @@ public class Transformer
         output.lineTo(tx1, ty1);
     }
 
-    public void quadTo(int x1, int y1, int x2, int y2) {
+    public void quadTo(double x1, double y1, double x2, double y2) {
         double tx1, ty1, tx2, ty2;
 
         if (scaleAndTranslate) {
@@ -138,9 +138,9 @@ public class Transformer
         output.quadTo(tx1, ty1, tx2, ty2);
     }
 
-    public void cubicTo(int x1, int y1,
-                        int x2, int y2,
-                        int x3, int y3)
+    public void cubicTo(double x1, double y1,
+                        double x2, double y2,
+                        double x3, double y3)
     {
         double tx1, ty1, tx2, ty2, tx3, ty3;
 

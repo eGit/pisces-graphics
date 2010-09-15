@@ -51,7 +51,7 @@ public abstract class PathSink extends LineSink {
      * @param x2 the final X coordinate 
      * @param y2 the final Y coordinate 
      */
-    public void quadTo(double x1, double y1, double x2, double y2) {}
+    public abstract void quadTo(double x1, double y1, double x2, double y2);
 
     /**
      * Draws a cubic Bezier curve starting at the current drawing
@@ -76,7 +76,7 @@ public abstract class PathSink extends LineSink {
      * @param x3 the final X coordinate 
      * @param y3 the final Y coordinate 
      */
-    public void cubicTo(double x1, double y1, double x2, double y2, double x3, double y3) {}
+    public abstract void cubicTo(double x1, double y1, double x2, double y2, double x3, double y3);
 
     public PathSink clone(){
         return (PathSink)super.clone();
