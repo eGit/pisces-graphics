@@ -208,6 +208,12 @@ public class Graphics
     /**
      * Bitmap font
      */
+    public final Graphics blit(String string, int x, int y){
+        return this.blit(string,x,y,1.0f);
+    }
+    /**
+     * Bitmap font
+     */
     public final Graphics blit(String string, int x, int y, float op){
         Font font = this.font;
         if (null != font){
@@ -216,6 +222,12 @@ public class Graphics
         }
         else
             throw new IllegalStateException("Missing font");
+    }
+    /**
+     * Vector font
+     */
+    public final Graphics draw(String string, int x, int y){
+        return this.draw(string,x,y,1.0f);
     }
     /**
      * Vector font
