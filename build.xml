@@ -89,14 +89,19 @@
 
   <target name="test" depends="test-jar">
 
-    <java classpath="${test-target.jar}" classname="FillImage" fork="true">
+    <java classpath="${test-target.jar}" classname="FillImage" fork="true" failonerror="true">
 
       <arg value="${test}/FillImage.png"/>
     </java>
 
-    <java classpath="${test-target.jar}" classname="FillPath" fork="true">
+    <java classpath="${test-target.jar}" classname="FillPath" fork="true" failonerror="true">
 
       <arg value="${test}/FillPath.png"/>
+    </java>
+
+    <java classpath="${test-target.jar}" classname="ABC" fork="true" failonerror="true">
+
+      <arg value="${test}/ABC.png"/>
     </java>
 
   </target>
@@ -108,6 +113,10 @@
     <archive target="${test-target.jar}" bin="${bin}" manifest="${test}/src/Manifest.mf">
       <pack>
         <zipfileset src="${target.jar}" />
+
+        <fileset dir="${test}">
+          <include name="**/*.psfu" />
+        </fileset>
       </pack>
     </archive>
 

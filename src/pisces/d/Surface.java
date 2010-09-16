@@ -81,11 +81,11 @@ public interface Surface
             public byte[] getData();
         }
 
-        public void drawSurface(Surface ps, int srcX, int srcY, 
-                                int dstX, int dstY, int width, int height, float opacity);
+        public void blit(Surface ps, int srcX, int srcY, 
+                         int dstX, int dstY, int width, int height, float opacity);
     
-        public void drawRGB(int[] argb, int offset, int scanLength, 
-                            int x, int y, int width, int height, float opacity);
+        public void blit(int[] argb, int offset, int scanLength, 
+                         int x, int y, int width, int height, float opacity);
     }
 
     public int getWidth();

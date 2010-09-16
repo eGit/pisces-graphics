@@ -44,14 +44,41 @@ public class Color
     public final static Color Blue      = new Color(  0,   0, 255);
 
 
+    public static class Transparent
+        extends Color
+    {
+
+        public final static Transparent White     = new Transparent(255, 255, 255);
+        public final static Transparent LightGray = new Transparent(192, 192, 192);
+        public final static Transparent Gray      = new Transparent(128, 128, 128);
+        public final static Transparent DarkGray  = new Transparent( 64,  64,  64);
+        public final static Transparent Black     = new Transparent(  0,   0,   0);
+        public final static Transparent Red       = new Transparent(255,   0,   0);
+        public final static Transparent Pink      = new Transparent(255, 175, 175);
+        public final static Transparent Orange    = new Transparent(255, 200,   0);
+        public final static Transparent Yellow    = new Transparent(255, 255,   0);
+        public final static Transparent Green     = new Transparent(  0, 255,   0);
+        public final static Transparent Magenta   = new Transparent(255,   0, 255);
+        public final static Transparent Cyan      = new Transparent(  0, 255, 255);
+        public final static Transparent Blue      = new Transparent(  0,   0, 255);
+
+
+        public Transparent(int r, int g, int b){
+            super(0,r,g,b);
+        }
+    }
+
+
+
     public final int alpha, red, green, blue;
 
+    public final int argb;
 
 
     public Color(int argb){
         super();
 
-        int a = (argb >>> 24) & 0xff;
+        int a = ((argb >>> 24) & 0xff);
         if (0 == a)
             this.alpha = 255;
         else
@@ -60,16 +87,20 @@ public class Color
         this.red = (argb >>> 16) & 0xff;
         this.green = (argb >>> 8) & 0xff;
         this.blue = (argb & 0xff);
+
+        this.argb = ToARGB(this);
     }
     public Color(int r, int g, int b){
         this(0xff,r,g,b);
     }
     public Color(int a, int r, int g, int b){
         super();
-        this.alpha = a;
-        this.red = r;
-        this.green = g;
-        this.blue = b;
+        this.alpha = (a & 0xff);
+        this.red   = (r & 0xff);
+        this.green = (g & 0xff);
+        this.blue  = (b & 0xff);
+
+        this.argb = ToARGB(this);
     }
 
 
@@ -81,4 +112,27 @@ public class Color
             throw new InternalError();
         }
     }
+    public int hashCode(){
+        return this.argb;
+    }
+    public boolean equals(Object that){
+        if (this == that)
+            return true;
+        else if (null == that)
+            return false;
+        else if (that instanceof Color)
+            return (this.hashCode() == that.hashCode());
+        else
+            return false;
+    }
+
+
+
+    private final static int ToARGB(Color c){
+        return ((c.alpha<<24) | 
+                (c.red<<16)|
+                (c.green<<8)|
+                (c.blue & 0xff));
+    }
+
 }

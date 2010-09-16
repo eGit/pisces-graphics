@@ -111,7 +111,7 @@ public final class Pisces
     private int[] gcm_rgba = null;
     private int gcm_cycleMethod = -1;
 
-    private Color color = new Color(0xff,0,0,0);
+    private Color color = Color.Transparent.Black;
 
     /*
      * Current bounding box for all primitives
@@ -179,15 +179,15 @@ public final class Pisces
     {
         this.surface.setRGB(argb,offset,scan,x,y,w,h);
     }
-    public void drawSurface(Surface ps, int srcX, int srcY, 
-                            int dstX, int dstY, int w, int h, float opacity)
+    public void blit(Surface ps, int srcX, int srcY, 
+                     int dstX, int dstY, int w, int h, float opacity)
     {
-        this.surface.drawSurface(ps,srcX, srcY, dstX, dstY, w, h, opacity);
+        this.surface.blit(ps,srcX, srcY, dstX, dstY, w, h, opacity);
     }
-    public void drawRGB(int[] argb, int offset, int scan, 
+    public void blit(int[] argb, int offset, int scan, 
                         int x, int y, int w, int h, float opacity)
     {
-        this.surface.drawRGB(argb,offset,scan,x,y,w,h,opacity);
+        this.surface.blit(argb,offset,scan,x,y,w,h,opacity);
     }
     public void setAntialiasing(boolean antialiasingOn) {
         this.antialiasingOn = antialiasingOn;

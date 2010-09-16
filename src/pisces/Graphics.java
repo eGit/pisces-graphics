@@ -21,12 +21,20 @@ package pisces;
 
 import pisces.d.NativeSurface;
 import pisces.d.Pisces;
+import pisces.d.Surface;
 import pisces.m.Matrix;
 import pisces.png.Encoder;
 
 /**
- * Pisces user interface, similar to Graphics2D and friends.  Produces
- * PNG images.
+ * Pisces user interface.
+ * 
+ * Most operations pass through the graphics pipeline including
+ * stroking and filling and transformations.  
+ * 
+ * Blit operations skip the pipeline and pass directly into the pixel
+ * blender and onto the surface (framebuffer).  The blit pixels
+ * include transparency for blending into the surface, but subpixel
+ * sampling for antialiasing is not performed.  
  * 
  * @see Path
  * @see Polygon
@@ -38,9 +46,11 @@ public class Graphics
 
     public final int width, height;
 
-    protected final NativeSurface surface;
+    protected final Surface.Sink surface;
 
     private Pisces renderer;
+
+    private Font font;
 
 
     public Graphics(int w, int h){
@@ -102,6 +112,13 @@ public class Graphics
         this.renderer.setColor(color);
         return this;
     }
+    public final Font getFont(){
+        return this.font;
+    }
+    public final Graphics setFont(Font font){
+        this.font = font;
+        return this;
+    }
     public final Graphics setTransform(Matrix transform) {
         this.renderer.setTransform(transform);
         return this;
@@ -109,8 +126,8 @@ public class Graphics
     public final Matrix getTransform() {
         return this.renderer.getTransform();
     }
-    public final Graphics setClip(double minX, double minY, double width, double height) {
-        this.renderer.setClip(minX, minY, width, height);
+    public final Graphics setClip(double x, double y, double width, double height) {
+        this.renderer.setClip(x, y, width, height);
         return this;
     }
     public final Graphics resetClip() {
@@ -149,7 +166,7 @@ public class Graphics
         this.renderer.getBoundingBox(bbox);
         return this;
     }
-    public final Graphics drawPath(Path p){
+    public final Graphics draw(Path p){
         if (null != p){
             this.setStroke();
             this.renderer.beginRendering(p.windingRule);
@@ -160,7 +177,7 @@ public class Graphics
         else
             throw new IllegalArgumentException();
     }
-    public final Graphics fillPath(Path p){
+    public final Graphics fill(Path p){
         if (null != p){
             this.setFill();
             this.renderer.beginRendering(p.windingRule);
@@ -170,6 +187,47 @@ public class Graphics
         }
         else
             throw new IllegalArgumentException();
+    }
+    public final Graphics blit(Surface image){
+        return this.blit(image,0,0);
+    }
+    public final Graphics blit(Surface image, int x, int y){
+        return this.blit(image,x,y,1.0f);
+    }
+    public final Graphics blit(Surface image, int x, int y, float opacity){
+        return this.blit(image,0,0,x,y,opacity);
+    }
+    public final Graphics blit(Surface image, int srcX, int srcY, int dstX, int dstY, float opacity){
+        return this.blit(image,srcX,srcY,dstX,dstY,image.getWidth(),image.getHeight(),opacity);
+    }
+    public final Graphics blit(Surface image, int srcX, int srcY, int dstX, int dstY, int w, int h, float opacity)
+    {
+        this.renderer.blit(image,srcX,srcY,dstX,dstY,w,h,opacity);
+        return this;
+    }
+    /**
+     * Bitmap font
+     */
+    public final Graphics blit(String string, int x, int y, float op){
+        Font font = this.font;
+        if (null != font){
+            font.blit(this,string,x,y,op);
+            return this;
+        }
+        else
+            throw new IllegalStateException("Missing font");
+    }
+    /**
+     * Vector font
+     */
+    public final Graphics draw(String string, int x, int y, float op){
+        Font font = this.font;
+        if (null != font){
+            font.draw(this,string,x,y,op);
+            return this;
+        }
+        else
+            throw new IllegalStateException("Missing font");
     }
     public final Graphics drawLine(double x0, double y0, double x1, double y1) {
         this.renderer.drawLine(x0, y0, x1, y1);
@@ -192,22 +250,22 @@ public class Graphics
         return this;
     }
     public final Graphics drawArc(double x, double y, double width, double height,
-                              double startAngle, double arcAngle, int arcType)
+                                  double startAngle, double arcAngle, int arcType)
     {
         this.renderer.drawArc(x, y, width, height,
                               startAngle, arcAngle, arcType);
         return this;
     }
     public final Graphics fillArc(double x, double y, double width, double height,
-                              double startAngle, double arcAngle, int arcType)
+                                  double startAngle, double arcAngle, int arcType)
     {
         this.renderer.fillArc(x, y, width, height,
                               startAngle, arcAngle, arcType);
         return this;
     }
     public final Graphics fillOrDrawArc(double x, double y, double width, double height,
-                                    double startAngle, double arcAngle, int arcType,
-                                    boolean stroke)
+                                        double startAngle, double arcAngle, int arcType,
+                                        boolean stroke)
     {
         this.renderer.fillOrDrawArc(x, y, width, height,
                                     startAngle, arcAngle, arcType,

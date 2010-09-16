@@ -176,11 +176,11 @@ public class NativeSurface
     /**
      * @see Surface$Sink
      */
-    public void drawSurface(Surface ps, 
-                            int srcX, int srcY, 
-                            int dstX, int dstY, 
-                            int width, int height, 
-                            float opacity)
+    public void blit(Surface ps, 
+                     int srcX, int srcY, 
+                     int dstX, int dstY, 
+                     int width, int height, 
+                     float opacity)
     {
         int srcW = ps.getWidth();
         int srcH = ps.getHeight();
@@ -216,8 +216,8 @@ public class NativeSurface
 
             NativeSurface ns = (NativeSurface)ps;                
 
-            this.drawRGB( ns.getData(), srcY * srcW + srcX, srcW, dstX, dstY, 
-                          width, height, opacity);
+            this.blit( ns.getData(), srcY * srcW + srcX, srcW, dstX, dstY, 
+                       width, height, opacity);
         }
         else {
             if (dstX < 0) {
@@ -246,16 +246,16 @@ public class NativeSurface
 
                 ps.getRGB(srcRGB, 0, width, srcX, srcY, width, height);
 
-                this.drawRGB(srcRGB, 0, width, dstX, dstY, width, height, 
-                             opacity);
+                this.blit(srcRGB, 0, width, dstX, dstY, width, height, 
+                          opacity);
             }
         }
     }
     /**
      * @see Surface$Sink
      */
-    public void drawRGB(int[] argb, int offset, int scanLength, 
-                        int x, int y, int width, int height, float opacity)
+    public void blit(int[] argb, int offset, int scanLength, 
+                     int x, int y, int width, int height, float opacity)
     {
         int srcX = 0;
         int srcY = 0;

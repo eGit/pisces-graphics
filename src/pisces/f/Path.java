@@ -23,6 +23,7 @@
  */
 package pisces.d;
 
+import pisces.d.PathStore;
 import pisces.m.Matrix;
 
 import java.io.DataInputStream;
@@ -33,9 +34,9 @@ import java.util.Hashtable;
 import java.util.zip.GZIPInputStream;
 
 /**
- * Linux console font, "fnt.gz", format. 
+ * Pisces path font
  */
-public class PiscesFont {
+public class Path {
 
     public static final int PLAIN = 0;
     public static final int BOLD = 1;
@@ -51,7 +52,7 @@ public class PiscesFont {
         String fname = "/" + name + "_" + styles[style] + ".fnt.gz";
         Face face = (Face)faces.get(fname);
         if (face == null) {
-            InputStream in = (PiscesFont.class).getResourceAsStream(fname);
+            InputStream in = (Path.class).getResourceAsStream(fname);
             if (in == null && style != PLAIN) {
                 return getFace(name, PLAIN);
             }
@@ -331,7 +332,7 @@ public class PiscesFont {
 
     Face face;
 
-    public PiscesFont(String name, int style, double size) throws IOException {
+    public Path(String name, int style, double size) throws IOException {
         super();
         this.face = getFace(name, style);
         this.name = name;

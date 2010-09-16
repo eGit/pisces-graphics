@@ -1,16 +1,20 @@
 
 import pisces.Color;
 import pisces.Graphics;
+import pisces.Font;
 import pisces.Polygon;
+import pisces.m.Matrix;
 
 /**
  * Creates a 300x300 PNG image 
  */
-public class FillPath
+public class ABC
     extends pisces.Image
 {
 
-    public FillPath(){
+    public ABC()
+        throws java.io.IOException
+    {
         super(300,300);
 
         Graphics g = this.createGraphics();
@@ -19,9 +23,13 @@ public class FillPath
         g.setColor(Color.White);
         g.fillRect(0, 0, 300, 300);
 
-        Polygon.Square square = new Polygon.Square(100,100,100);
+        Font font = new Font("sun12x22.psfu");
+
+        g.setFont(font);
         g.setColor(Color.Black);
-        g.fill(square);
+
+        g.blit("ABC",20,20,1.0f);
+
     }
 
 
@@ -31,7 +39,7 @@ public class FillPath
             try {
                 java.io.File out = new java.io.File(argv[0]);
 
-                FillPath img = new FillPath();
+                ABC img = new ABC();
                 byte[] png = img.toPNG();
                 java.io.OutputStream os = new java.io.FileOutputStream(out);
                 try {
@@ -50,7 +58,7 @@ public class FillPath
             }
         }
         else {
-            System.err.println("Usage: FillPath out-file.png");
+            System.err.println("Usage: ABC out-file.png");
             System.exit(1);
         }
     }
