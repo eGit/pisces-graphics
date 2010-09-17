@@ -2,8 +2,9 @@
 
 * Analyze PiscesCache wrt renderPath and PathStore in order to replace the COMMAND set with the PathStore
 
-* Complete d2 cloning 
-** See PiscesRenderer and all LinkSink subclasses
+* Complete "d" cloning 
+** See Pisces and LineSink subclasses
+** (see also dispose methods' definitions)
 
 * Change font related draw method arguments from int to double.
 **  public final Graphics draw(String string, int x, int y)
