@@ -10,5 +10,6 @@
 **  public final Graphics draw(String string, int x, int y)
 **  public final Graphics draw(String string, int x, int y, float op)
 
-* Blit into pipeline
+* Blit into pipeline (as draw)
+** Permit draw bitmap font (with antialiasing and transformations)
 
