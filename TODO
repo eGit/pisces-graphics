@@ -13,3 +13,7 @@
 * Blit into pipeline (as draw)
 ** Permit draw bitmap font (with antialiasing and transformations)
 
+* Sort pisces.f.Path
+** What format is this?  original?
+** Adapt to new font structure
+
