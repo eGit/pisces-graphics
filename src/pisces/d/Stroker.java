@@ -131,6 +131,10 @@ public class Stroker
         this.setParameters(lineWidth, capStyle, joinStyle, miterLimit, transform);
     }
 
+
+    public void dispose(){
+        this.output = null;
+    }
     /**
      * Sets the output <code>LineSink</code> of this
      * <code>Stroker</code>.

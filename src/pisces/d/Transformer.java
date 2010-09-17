@@ -65,6 +65,10 @@ public class Transformer
         classify();
     }
 
+
+    public void dispose(){
+        this.output = null;
+    }
     public void setTransform(Matrix transform) {
         this.m00 = transform.m00;
         this.m01 = transform.m01;

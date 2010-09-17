@@ -84,6 +84,8 @@ public abstract class LineSink
      */
     public abstract void end();
 
+    public abstract void dispose();
+
     public LineSink clone(){
         try {
             return (LineSink)super.clone();

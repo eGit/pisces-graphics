@@ -157,6 +157,75 @@ public final class Pisces
     }
 
 
+    public void dispose(){
+        this.surface = null;
+        RendererBase r = this.rdr;
+        if (null != r){
+            this.rdr = null;
+            r.dispose();
+        }
+        LineSink p;
+
+        p = this.fillerP;
+        if (null != p){
+            this.fillerP = null;
+            p.dispose();
+        }
+        p = this.textFillerP;
+        if (null != p){
+            this.textFillerP = null;
+            p.dispose();
+        }
+        p = this.strokerP;
+        if (null != p){
+            this.strokerP = null;
+            p.dispose();
+        }
+        p = this.externalConsumer;
+        if (null != p){
+            this.externalConsumer = null;
+            p.dispose();
+        }
+        this.transform = null;
+        this.paint = null;
+        this.paintTransform = null;
+        this.paintCompoundTransform = null;
+        p = this.fillFlattener;
+        if (null != p){
+            this.fillFlattener = null;
+            p.dispose();
+        }
+        p = this.fillTransformer;
+        if (null != p){
+            this.fillTransformer = null;
+            p.dispose();
+        }
+        p = this.textFlattener;
+        if (null != p){
+            this.textFlattener = null;
+            p.dispose();
+        }
+        p = this.strokeStroker;
+        if (null != p){
+            this.strokeStroker = null;
+            p.dispose();
+        }
+        p = this.strokeDasher;
+        if (null != p){
+            this.strokeDasher = null;
+            p.dispose();
+        }
+        p = this.strokeFlattener;
+        if (null != p){
+            this.strokeFlattener = null;
+            p.dispose();
+        }
+        p = this.strokeTransformer;
+        if (null != p){
+            this.strokeTransformer = null;
+            p.dispose();
+        }
+    }
     public int getDataType(){
         return this.surface.getDataType();
     }

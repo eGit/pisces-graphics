@@ -32,7 +32,7 @@ package pisces.d;
  * @see Pisces
  * @see Blit
  */
-public class Renderer
+public final class Renderer
     extends RendererBase
 {
     /*
@@ -194,6 +194,10 @@ public class Renderer
     }
 
 
+    public void dispose(){
+        this.cache = null;
+        this.paint = null;
+    }
     public void setAntialiasing(int subpixelLgPositionsX,
                                 int subpixelLgPositionsY)
     {

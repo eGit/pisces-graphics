@@ -98,6 +98,14 @@ public class Graphics
     public final Graphics create(double x, double y, double w, double h){
         return this.create().setClip(x,y,w,h);
     }
+    public void dispose(){
+        Pisces r = this.renderer;
+        if (null != r){
+            this.renderer = null;
+            r.dispose();
+        }
+        this.font = null;
+    }
     public final Graphics setAntialiasing(boolean antialiasingOn) {
         this.renderer.setAntialiasing(antialiasingOn);
         return this;
@@ -142,6 +150,13 @@ public class Graphics
         this.renderer.setFill();
         return this;
     }
+    /**
+     * Begin path operations
+     */
+    public final Graphics beginRendering(int windingRule) {
+        this.renderer.beginRendering(windingRule);
+        return this;
+    }
     public final Graphics moveTo(double x0, double y0) {
         this.renderer.moveTo(x0, y0);
         return this;
@@ -160,6 +175,21 @@ public class Graphics
     }
     public final Graphics cubicTo(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.renderer.cubicTo(x1, y1, x2, y2, x3, y3);
+        return this;
+    }
+    /**
+     * Close a path by emitting a line from the last point "pen down"
+     * (e.g. last lineTo) to the last point "pen up" (last moveTo).
+     */
+    public final Graphics close() {
+        this.renderer.close();
+        return this;
+    }
+    /**
+     * End path operations
+     */
+    public final Graphics endRendering() {
+        this.renderer.endRendering();
         return this;
     }
     public final Graphics getBoundingBox(double[] bbox) {

@@ -177,6 +177,8 @@ public class PathStore
             }
         }
     }
+    public void dispose(){
+    }
     protected void ensureCapacity(int elements) {
 
         final int grow = (elements<<1);

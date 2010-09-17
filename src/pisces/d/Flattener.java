@@ -79,6 +79,9 @@ public class Flattener extends PathSink {
     }
 
 
+    public void dispose(){
+        this.output = null;
+    }
     public void setOutput(LineSink output) {
         this.output = output;
     }

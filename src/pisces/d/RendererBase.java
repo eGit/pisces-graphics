@@ -143,6 +143,8 @@ public abstract class RendererBase
     
     public abstract void clearRect(double x, double y, double w, double h);
 
+    public abstract void dispose();
+
     public RendererBase clone(){
         return (RendererBase)super.clone();
     }
