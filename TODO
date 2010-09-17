@@ -5,3 +5,7 @@
 * Complete d2 cloning 
 ** See PiscesRenderer and all LinkSink subclasses
 
+* Change font related draw method arguments from int to double.
+**  public final Graphics draw(String string, int x, int y)
+**  public final Graphics draw(String string, int x, int y, float op)
+
