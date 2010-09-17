@@ -10,3 +10,5 @@
 **  public final Graphics draw(String string, int x, int y)
 **  public final Graphics draw(String string, int x, int y, float op)
 
+* Blit into pipeline
+
