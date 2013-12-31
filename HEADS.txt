@@ -7,6 +7,9 @@ http://code.google.com/p/pisces-graphics/source/browse/trunk/HEADS.txt
   Exception text from file headers when I applied a GPL without
   attention to the CLASSPATH Exception.
 
+  See for example the following discussion
+  http://mail.openjdk.java.net/pipermail/graphics-rasterizer-dev/2007-June/000044.html
+
   This code is original to myself and others (Jim Graham, Sun
   Microsystems) following the copyright statements in each java source
   file.  

@@ -77,3 +77,9 @@
     Size: 32915 bytes
     Location: http://mail.openjdk.java.net/pipermail/2d-dev/attachments/20071003/f2d8998c/attachment.zip 
 
+
+Update 2013/12/31
+ See also 
+ http://mail.openjdk.java.net/pipermail/graphics-rasterizer-dev/2007-May.txt
+ http://mail.openjdk.java.net/pipermail/graphics-rasterizer-dev/2007-June.txt
+
